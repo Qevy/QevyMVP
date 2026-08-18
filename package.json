@@ -6,21 +6,45 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "check:caldav": "tsx scripts/caldav-check.mts",
+    "check:crypto": "tsx --conditions=react-server scripts/crypto-check.mts",
+    "probe:icloud": "tsx --conditions=react-server --env-file=.env.local scripts/icloud-probe.mts",
+    "cleanup:planner": "tsx --conditions=react-server --env-file=.env.local scripts/planner-cleanup.mts",
+    "check:slots": "tsx scripts/slots-check.mts",
+    "check:llm": "tsx --env-file=.env.local scripts/llm-toolcheck.mts",
+    "check": "npm run check:caldav && npm run check:crypto && npm run check:slots && npm run check:checkin && npm run check:adaptation && tsc --noEmit",
+    "check:checkin": "tsx --conditions=react-server scripts/checkin-check.mts",
+    "seed:week": "tsx --env-file=.env.local scripts/seed-week.mts",
+    "check:adaptation": "tsx --conditions=react-server scripts/adaptation-check.mts"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.39",
+    "@ai-sdk/groq": "^4.0.28",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.2",
+    "ai": "^7.0.66",
+    "clsx": "^2.1.1",
+    "ical.js": "^2.2.1",
+    "luxon": "^3.7.2",
     "next": "16.3.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "tailwind-merge": "^3.6.0",
+    "tsdav": "^2.3.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/luxon": "^3.7.4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
+    "tsx": "^4.23.11",
     "typescript": "^5"
   }
 }
