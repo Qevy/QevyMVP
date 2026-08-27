@@ -1,44 +1,52 @@
-import { AppNav } from "@/components/AppNav";
+import { Sidebar, MobileBar, Logo } from "@/components/Sidebar";
+import { SearchIcon, BellIcon } from "@/components/icons";
 import { requireUser } from "@/lib/auth";
-import { signOut } from "./actions";
 
-export default async function AppLayout({
-  children,
-}: LayoutProps<"/">) {
+export default async function AppLayout({ children }: LayoutProps<"/">) {
   const user = await requireUser();
+  const initial = (user.email?.[0] ?? "H").toUpperCase();
 
   return (
-    <div className="flex min-h-full flex-col">
-      <header className="border-b border-slate-800">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-4">
-            <span className="text-sm font-semibold text-slate-100">Planner</span>
-            <AppNav />
-          </div>
+    <div className="min-h-full">
+      <Sidebar initial={initial} />
 
-          <div className="flex items-center gap-3 text-xs">
-            {user.isPreview ? (
-              <span className="rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 py-1 font-medium text-amber-300">
-                Preview mode — no login
-              </span>
-            ) : (
-              <>
-                <span className="hidden text-slate-500 sm:inline">{user.email}</span>
-                <form action={signOut}>
-                  <button
-                    type="submit"
-                    className="rounded-md border border-slate-700 px-2.5 py-1.5 text-slate-400 transition hover:border-slate-500 hover:text-slate-200"
-                  >
-                    Sign out
-                  </button>
-                </form>
-              </>
-            )}
-          </div>
+      {/* Phone header: the sidebar's identity, without the sidebar. */}
+      <div className="flex items-center justify-between border-b border-line px-5 py-3.5 lg:hidden">
+        <Logo />
+        <div className="flex items-center gap-1">
+          <IconButton label="Search">
+            <SearchIcon className="size-[18px]" />
+          </IconButton>
+          <IconButton label="Notifications">
+            <BellIcon className="size-[18px]" />
+          </IconButton>
+          <span className="ml-1 grid size-8 place-items-center rounded-full bg-surface-2 text-xs font-medium text-text-dim">
+            {initial}
+          </span>
         </div>
-      </header>
+      </div>
 
-      {children}
+      <div className="pb-28 lg:pb-0 lg:pl-[200px]">{children}</div>
+
+      <MobileBar />
     </div>
+  );
+}
+
+function IconButton({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      className="grid size-9 place-items-center rounded-full text-text-dim transition hover:bg-surface hover:text-text"
+    >
+      {children}
+    </button>
   );
 }

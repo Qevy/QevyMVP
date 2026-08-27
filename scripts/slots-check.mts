@@ -6,6 +6,7 @@ const ZONE = "America/Chicago";
 
 function profileWith(overrides: Partial<Profile> = {}): Profile {
   return {
+    display_name: null,
     timezone: ZONE,
     working_hours: {
       "1": [{ start: "18:00", end: "22:00" }],

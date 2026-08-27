@@ -72,7 +72,11 @@ $$;
 
 create table public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
-  timezone text not null default 'Europe/London',
+
+  -- What the app calls you in the interface. Optional.
+  display_name text check (display_name is null or length(display_name) <= 40),
+
+  timezone text not null default 'America/Chicago',
 
   -- The window the app is ALLOWED to schedule within — not the day job.
   -- Fixed commitments come from the calendar; this is the outer boundary.

@@ -13,7 +13,7 @@ import { saveSettings, type SettingsState } from "./actions";
 const INITIAL: SettingsState = { status: "idle" };
 
 const FIELD =
-  "rounded-md border border-slate-700 bg-slate-900 px-3 py-2 text-sm text-slate-100 outline-none focus:border-purple-500";
+  "rounded-md border border-line-strong bg-surface-2 px-3 py-2 text-sm text-text outline-none focus:border-accent";
 
 function SaveButton() {
   const { pending } = useFormStatus();
@@ -21,7 +21,7 @@ function SaveButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-purple-500 disabled:opacity-60"
+      className="rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-soft disabled:opacity-60"
     >
       {pending ? "Saving…" : "Save settings"}
     </button>
@@ -39,14 +39,14 @@ function DayRow({
   const [available, setAvailable] = useState(Boolean(existing));
 
   return (
-    <div className="flex flex-wrap items-center gap-3 border-b border-slate-800/60 py-2.5 last:border-b-0">
-      <label className="flex w-36 shrink-0 items-center gap-2 text-sm text-slate-300">
+    <div className="flex flex-wrap items-center gap-3 border-b border-line py-2.5 last:border-b-0">
+      <label className="flex w-36 shrink-0 items-center gap-2 text-sm text-text-dim">
         <input
           type="checkbox"
           name={`available_${day}`}
           checked={available}
           onChange={(event) => setAvailable(event.target.checked)}
-          className="size-4 accent-purple-500"
+          className="size-4 accent-[#7c5cff]"
         />
         {WEEKDAY_NAMES[day]}
       </label>
@@ -60,7 +60,7 @@ function DayRow({
           className={`${FIELD} disabled:opacity-40`}
           aria-label={`${WEEKDAY_NAMES[day]} start`}
         />
-        <span className="text-xs text-slate-600">to</span>
+        <span className="text-xs text-text-faint">to</span>
         <input
           type="time"
           name={`end_${day}`}
@@ -72,7 +72,7 @@ function DayRow({
       </div>
 
       {!available && (
-        <span className="text-xs text-slate-600">Never schedule this day</span>
+        <span className="text-xs text-text-faint">Never schedule this day</span>
       )}
     </div>
   );
@@ -85,8 +85,24 @@ export function SettingsForm({ profile }: { profile: Profile }) {
     <form action={formAction} className="flex flex-col gap-8">
       <section className="flex flex-col gap-4">
         <div>
-          <h2 className="text-sm font-semibold text-slate-200">Timezone</h2>
-          <p className="text-xs text-slate-500">
+          <h2 className="text-sm font-semibold text-text">Your name</h2>
+          <p className="text-xs text-text-faint">
+            Used to greet you on the dashboard. Leave it blank to skip that.
+          </p>
+        </div>
+        <input
+          name="display_name"
+          defaultValue={profile.display_name ?? ""}
+          maxLength={40}
+          placeholder="Hadi"
+          className={`${FIELD} max-w-xs`}
+        />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <div>
+          <h2 className="text-sm font-semibold text-text">Timezone</h2>
+          <p className="text-xs text-text-faint">
             Everything is stored in UTC and shown in this zone.
           </p>
         </div>
@@ -108,16 +124,16 @@ export function SettingsForm({ profile }: { profile: Profile }) {
 
       <section className="flex flex-col gap-3">
         <div>
-          <h2 className="text-sm font-semibold text-slate-200">
+          <h2 className="text-sm font-semibold text-text">
             When the app may schedule
           </h2>
-          <p className="max-w-2xl text-xs text-slate-500">
+          <p className="max-w-2xl text-xs text-text-faint">
             The outer boundary of your day — not your 9-5. Your fixed
             commitments already come from your calendar; blocks are only ever
             placed in the gaps inside these windows.
           </p>
         </div>
-        <div className="rounded-lg border border-slate-800 bg-slate-900/40 px-4">
+        <div className="rounded-card border border-line bg-surface px-4">
           {WEEKDAY_KEYS.map((day) => (
             <DayRow
               key={day}
@@ -130,8 +146,8 @@ export function SettingsForm({ profile }: { profile: Profile }) {
 
       <section className="flex flex-col gap-4">
         <div>
-          <h2 className="text-sm font-semibold text-slate-200">Buffer</h2>
-          <p className="text-xs text-slate-500">
+          <h2 className="text-sm font-semibold text-text">Buffer</h2>
+          <p className="text-xs text-text-faint">
             Minimum gap left either side of a fixed commitment.
           </p>
         </div>
@@ -145,14 +161,14 @@ export function SettingsForm({ profile }: { profile: Profile }) {
             defaultValue={profile.buffer_minutes}
             className={`${FIELD} w-24`}
           />
-          <span className="text-sm text-slate-500">minutes</span>
+          <span className="text-sm text-text-faint">minutes</span>
         </div>
       </section>
 
       <section className="flex flex-col gap-4">
         <div>
-          <h2 className="text-sm font-semibold text-slate-200">Weekly check-in</h2>
-          <p className="text-xs text-slate-500">
+          <h2 className="text-sm font-semibold text-text">Weekly check-in</h2>
+          <p className="text-xs text-text-faint">
             When the check-in becomes available. It waits for you — it never
             emails or nags.
           </p>
@@ -169,7 +185,7 @@ export function SettingsForm({ profile }: { profile: Profile }) {
               </option>
             ))}
           </select>
-          <span className="text-sm text-slate-500">from</span>
+          <span className="text-sm text-text-faint">from</span>
           <select
             name="checkin_hour"
             defaultValue={String(profile.checkin_hour)}
@@ -187,12 +203,12 @@ export function SettingsForm({ profile }: { profile: Profile }) {
       <div className="flex items-center gap-3">
         <SaveButton />
         {state.status === "saved" && (
-          <span role="status" className="text-xs text-emerald-300">
+          <span role="status" className="text-xs text-good">
             {state.message}
           </span>
         )}
         {state.status === "error" && (
-          <span role="alert" className="text-xs text-rose-300">
+          <span role="alert" className="text-xs text-bad">
             {state.message}
           </span>
         )}

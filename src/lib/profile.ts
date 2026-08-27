@@ -34,6 +34,8 @@ export type AvailabilityWindow = z.infer<typeof availabilityWindowSchema>;
 export type WorkingHours = Record<string, AvailabilityWindow[]>;
 
 export const profileSchema = z.object({
+  /** What the app calls you. Empty is fine — the greeting just drops it. */
+  display_name: z.string().max(40).nullable().catch(null).default(null),
   timezone: z.string().min(1),
   working_hours: workingHoursSchema,
   buffer_minutes: z.number().int().min(0).max(120),
@@ -58,6 +60,7 @@ export const WEEKDAY_KEYS = ["1", "2", "3", "4", "5", "6", "7"] as const;
 
 /** Mirrors the column defaults in 0001_init.sql. */
 export const DEFAULT_PROFILE: Profile = {
+  display_name: null,
   timezone: DEFAULT_TIMEZONE,
   working_hours: {
     "1": [{ start: "07:00", end: "22:00" }],

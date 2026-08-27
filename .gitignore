@@ -47,3 +47,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Skill symlinks point at absolute local paths, so they are machine-specific.
+# The skill's real files live in .agents/skills and are committed; running
+# `npx skills add` re-creates these links.
+/.claude/skills/

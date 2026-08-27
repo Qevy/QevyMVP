@@ -10,9 +10,9 @@ export const metadata = { title: "Today · Planner" };
 export const dynamic = "force-dynamic";
 
 const STATUS_STYLE: Record<string, string> = {
-  done: "border-emerald-500/40 bg-emerald-500/10 text-emerald-300",
-  missed: "border-rose-500/40 bg-rose-500/10 text-rose-300",
-  partial: "border-amber-500/40 bg-amber-500/10 text-amber-300",
+  done: "border-good/40 bg-good/10 text-good",
+  missed: "border-bad/40 bg-bad/10 text-bad",
+  partial: "border-warn/40 bg-warn/10 text-warn",
 };
 
 function MarkButton({
@@ -38,7 +38,7 @@ function MarkButton({
           "rounded-md border px-3 py-2 text-xs font-medium transition",
           active
             ? STATUS_STYLE[status]
-            : "border-slate-700 text-slate-400 hover:border-slate-500 hover:text-slate-200",
+            : "border-line-strong text-text-dim hover:border-line-strong hover:text-text",
         )}
       >
         {label}
@@ -52,10 +52,10 @@ function BlockRow({ block, zone }: { block: ScheduledBlock; zone: string }) {
   const end = DateTime.fromISO(block.plannedEnd).setZone(zone);
 
   return (
-    <li className="flex flex-col gap-3 border-b border-slate-800/60 py-3 last:border-b-0">
+    <li className="flex flex-col gap-3 border-b border-line py-3 last:border-b-0">
       <div>
-        <p className="text-sm text-slate-100">{block.title}</p>
-        <p className="text-xs text-slate-500">
+        <p className="text-sm text-text">{block.title}</p>
+        <p className="text-xs text-text-faint">
           {start.toFormat("HH:mm")}–{end.toFormat("HH:mm")} · {block.taskType}
         </p>
       </div>
@@ -95,43 +95,43 @@ export default async function TodayPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-6 sm:px-6">
       <header>
-        <h1 className="text-xl font-semibold text-slate-100">Today</h1>
-        <p className="text-xs text-slate-500">{now.toFormat("cccc d LLLL")}</p>
+        <h1 className="text-xl font-semibold text-text">Today</h1>
+        <p className="text-xs text-text-faint">{now.toFormat("cccc d LLLL")}</p>
       </header>
 
       {checkinDue && (
         <Link
           href="/checkin"
-          className="flex items-center justify-between gap-3 rounded-lg border border-purple-500/40 bg-purple-500/10 p-4 transition hover:border-purple-400"
+          className="flex items-center justify-between gap-3 rounded-card border border-line-strong bg-surface p-4 transition hover:border-line-strong"
         >
           <span>
-            <span className="block text-sm font-medium text-purple-200">
+            <span className="block text-sm font-medium text-text">
               Weekly check-in is ready
             </span>
-            <span className="block text-xs text-purple-200/70">
+            <span className="block text-xs text-text-dim">
               Go through what happened last week
             </span>
           </span>
-          <span aria-hidden className="text-purple-300">
+          <span aria-hidden className="text-text-dim">
             →
           </span>
         </Link>
       )}
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold text-slate-300">
+        <h2 className="mb-2 text-sm font-semibold text-text-dim">
           Scheduled today
         </h2>
         {blocks.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-slate-700 p-4 text-xs text-slate-500">
+          <p className="rounded-card border border-dashed border-line-strong p-4 text-xs text-text-faint">
             Nothing scheduled today.{" "}
-            <Link href="/plan" className="text-purple-400 underline underline-offset-2">
+            <Link href="/plan" className="text-text underline underline-offset-2">
               Plan something
             </Link>
             .
           </p>
         ) : (
-          <ul className="rounded-lg border border-slate-800 bg-slate-900/40 px-4">
+          <ul className="rounded-card border border-line bg-surface px-4">
             {blocks.map((block) => (
               <BlockRow key={block.id} block={block} zone={zone} />
             ))}
@@ -141,13 +141,13 @@ export default async function TodayPage() {
 
       {earlier.length > 0 && (
         <section>
-          <h2 className="mb-2 text-sm font-semibold text-slate-300">
+          <h2 className="mb-2 text-sm font-semibold text-text-dim">
             Still unmarked from this week
           </h2>
-          <p className="mb-2 text-xs text-slate-500">
+          <p className="mb-2 text-xs text-text-faint">
             Marking these now saves the check-in asking about them.
           </p>
-          <ul className="rounded-lg border border-slate-800 bg-slate-900/40 px-4">
+          <ul className="rounded-card border border-line bg-surface px-4">
             {earlier.map((block) => (
               <BlockRow key={block.id} block={block} zone={zone} />
             ))}

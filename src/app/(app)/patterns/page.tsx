@@ -21,19 +21,19 @@ export default async function PatternsPage() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-6 sm:px-6">
       <header>
-        <h1 className="text-xl font-semibold text-slate-100">Patterns</h1>
-        <p className="max-w-2xl text-xs text-slate-500">
+        <h1 className="text-xl font-semibold text-text">Patterns</h1>
+        <p className="max-w-2xl text-xs text-text-faint">
           Everything here comes from what you said in a check-in. Nothing is
           inferred, and every rule shows the words behind it.
         </p>
       </header>
 
       {totalReasons === 0 ? (
-        <div className="rounded-lg border border-dashed border-slate-700 p-4 text-sm text-slate-400">
+        <div className="rounded-card border border-dashed border-line-strong p-4 text-sm text-text-dim">
           <p>No reasons recorded yet.</p>
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-text-faint">
             After a{" "}
-            <Link href="/checkin" className="text-purple-400 underline underline-offset-2">
+            <Link href="/checkin" className="text-text underline underline-offset-2">
               weekly check-in
             </Link>
             , the times that repeatedly do not work for you show up here — and
@@ -44,16 +44,16 @@ export default async function PatternsPage() {
         <>
           <section className="flex flex-col gap-3">
             <div>
-              <h2 className="text-sm font-semibold text-slate-200">
+              <h2 className="text-sm font-semibold text-text">
                 Active rules
               </h2>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-text-faint">
                 The planner will not schedule these task types in these slots.
               </p>
             </div>
 
             {rules.length === 0 ? (
-              <p className="rounded-lg border border-dashed border-slate-700 p-4 text-xs text-slate-500">
+              <p className="rounded-card border border-dashed border-line-strong p-4 text-xs text-text-faint">
                 Nothing has been said {DEFAULT_MIN_REASONS} times yet, so there
                 is no rule to apply.
               </p>
@@ -63,15 +63,15 @@ export default async function PatternsPage() {
                   <li
                     key={rule.key}
                     className={cn(
-                      "rounded-lg border p-4",
+                      "rounded-card border p-4",
                       rule.muted
-                        ? "border-slate-800 bg-slate-900/30 opacity-60"
-                        : "border-purple-500/30 bg-purple-500/5",
+                        ? "border-line bg-surface opacity-60"
+                        : "border-line-strong bg-surface",
                     )}
                   >
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="text-sm text-slate-100">
+                        <p className="text-sm text-text">
                           Avoid{" "}
                           <span className="font-medium">{rule.taskType}</span> in
                           the{" "}
@@ -79,7 +79,7 @@ export default async function PatternsPage() {
                             {SLOT_BUCKET_LABELS[rule.bucket].toLowerCase()}
                           </span>
                         </p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-text-faint">
                           Missed {rule.confidenceCount} times
                           {rule.muted && " · switched off"}
                         </p>
@@ -94,17 +94,17 @@ export default async function PatternsPage() {
                         />
                         <button
                           type="submit"
-                          className="rounded-md border border-slate-700 px-2.5 py-1.5 text-xs text-slate-400 transition hover:border-slate-500 hover:text-slate-200"
+                          className="rounded-md border border-line-strong px-2.5 py-1.5 text-xs text-text-dim transition hover:border-line-strong hover:text-text"
                         >
                           {rule.muted ? "Switch on" : "Switch off"}
                         </button>
                       </form>
                     </div>
 
-                    <ul className="mt-3 flex flex-col gap-1.5 border-t border-slate-800 pt-3">
+                    <ul className="mt-3 flex flex-col gap-1.5 border-t border-line pt-3">
                       {rule.reasons.map((reason) => (
-                        <li key={reason.id} className="text-xs text-slate-400">
-                          <span className="text-slate-600">
+                        <li key={reason.id} className="text-xs text-text-dim">
+                          <span className="text-text-faint">
                             {stated(reason.statedAt)}
                           </span>{" "}
                           &ldquo;{reason.reasonText}&rdquo;
@@ -120,26 +120,26 @@ export default async function PatternsPage() {
           {emerging.length > 0 && (
             <section className="flex flex-col gap-3">
               <div>
-                <h2 className="text-sm font-semibold text-slate-200">
+                <h2 className="text-sm font-semibold text-text">
                   Watching
                 </h2>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-text-faint">
                   Said once so far. Becomes a rule if it happens again — one
                   bad week is not a pattern.
                 </p>
               </div>
-              <ul className="rounded-lg border border-slate-800 bg-slate-900/40 px-4">
+              <ul className="rounded-card border border-line bg-surface px-4">
                 {emerging.map((pattern) => (
                   <li
                     key={pattern.key}
-                    className="border-b border-slate-800/60 py-3 text-xs last:border-b-0"
+                    className="border-b border-line py-3 text-xs last:border-b-0"
                   >
-                    <p className="text-slate-300">
+                    <p className="text-text-dim">
                       {pattern.taskType} ·{" "}
                       {SLOT_BUCKET_LABELS[pattern.bucket].toLowerCase()}
                     </p>
                     {pattern.reasons.map((reason) => (
-                      <p key={reason.id} className="mt-1 text-slate-500">
+                      <p key={reason.id} className="mt-1 text-text-faint">
                         &ldquo;{reason.reasonText}&rdquo;
                       </p>
                     ))}

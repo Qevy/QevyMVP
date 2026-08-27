@@ -15,6 +15,12 @@ export type SettingsState = {
 };
 
 const scalarsSchema = z.object({
+  display_name: z
+    .string()
+    .trim()
+    .max(40, "Keep it under 40 characters")
+    .transform((v) => (v.length === 0 ? null : v))
+    .nullable(),
   timezone: z.string().min(1, "Pick a timezone"),
   buffer_minutes: z.coerce.number<number>().int().min(0).max(120),
   checkin_weekday: z.coerce.number<number>().int().min(1).max(7),
@@ -28,6 +34,7 @@ export async function saveSettings(
   const user = await requireUser();
 
   const scalars = scalarsSchema.safeParse({
+    display_name: formData.get("display_name") ?? "",
     timezone: formData.get("timezone"),
     buffer_minutes: formData.get("buffer_minutes"),
     checkin_weekday: formData.get("checkin_weekday"),

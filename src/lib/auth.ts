@@ -68,7 +68,7 @@ export async function getProfile(user: SessionUser): Promise<Profile> {
   const { data, error } = await supabase
     .from("profiles")
     .select(
-      "timezone, working_hours, buffer_minutes, checkin_weekday, checkin_hour, planner_calendar_id",
+      "display_name, timezone, working_hours, buffer_minutes, checkin_weekday, checkin_hour, planner_calendar_id",
     )
     .eq("id", user.id)
     .maybeSingle();

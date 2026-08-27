@@ -1,19 +1,114 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0b1120;
-  --foreground: #e2e8f0;
+/*
+ * Planner UI — dark dashboard.
+ *
+ * Near-black ground, slightly raised cards, violet primary with a small set
+ * of category hues. Gradients are used sparingly: the ring, the active bar,
+ * and the mic. Everything else is flat so those three read as emphasis.
+ */
+
+@theme {
+  --color-bg: #0a0a0b;
+  --color-surface: #141416;
+  --color-surface-2: #1b1b1f;
+  --color-surface-3: #232328;
+  --color-line: #232327;
+  --color-line-strong: #2e2e34;
+
+  --color-text: #f5f5f7;
+  --color-text-dim: #a1a1aa;
+  --color-text-faint: #6e6e78;
+
+  --color-accent: #7c5cff;
+  --color-accent-soft: #9d85ff;
+  --color-accent-blue: #5b8def;
+
+  /* Categories — used for task types and status dots. */
+  --color-cat-violet: #8b5cf6;
+  --color-cat-blue: #3b82f6;
+  --color-cat-amber: #f59e0b;
+  --color-cat-green: #22c55e;
+  --color-cat-pink: #ec4899;
+
+  --color-good: #22c55e;
+  --color-warn: #f59e0b;
+  --color-bad: #ef4444;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-card: 1rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Card surface, used everywhere so the grid stays consistent. */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+}
+
+.snap-row {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
+.snap-item {
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-soft);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* The mic's halo. Kept to one element so it reads as the primary action. */
+@keyframes halo {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(124, 92, 255, 0.45),
+      0 0 34px 6px rgba(236, 72, 153, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(124, 92, 255, 0),
+      0 0 46px 10px rgba(236, 72, 153, 0.3);
+  }
+}
+.mic-halo {
+  animation: halo 2.8s ease-in-out infinite;
+}
+.mic-recording {
+  animation: halo 0.9s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

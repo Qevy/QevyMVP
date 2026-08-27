@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-purple-500 disabled:opacity-60"
+      className="rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-soft disabled:opacity-60"
     >
       {pending ? "Checking with iCloud…" : "Connect iCloud"}
     </button>
@@ -25,7 +25,7 @@ export function ConnectForm({ defaultAppleId }: { defaultAppleId?: string }) {
   return (
     <form action={formAction} className="flex max-w-md flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="apple_id" className="text-xs font-medium text-slate-400">
+        <label htmlFor="apple_id" className="text-xs font-medium text-text-dim">
           Apple ID
         </label>
         <input
@@ -35,14 +35,14 @@ export function ConnectForm({ defaultAppleId }: { defaultAppleId?: string }) {
           required
           defaultValue={defaultAppleId}
           autoComplete="username"
-          className="rounded-md border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-purple-500"
+          className="rounded-md border border-line-strong bg-surface-2 px-3 py-2.5 text-sm text-text outline-none placeholder:text-text-faint focus:border-accent"
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
         <label
           htmlFor="app_password"
-          className="text-xs font-medium text-slate-400"
+          className="text-xs font-medium text-text-dim"
         >
           App-specific password
         </label>
@@ -54,15 +54,15 @@ export function ConnectForm({ defaultAppleId }: { defaultAppleId?: string }) {
           placeholder="abcd-efgh-ijkl-mnop"
           autoComplete="off"
           spellCheck={false}
-          className="rounded-md border border-slate-700 bg-slate-900 px-3 py-2.5 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-700 focus:border-purple-500"
+          className="rounded-md border border-line-strong bg-surface-2 px-3 py-2.5 font-mono text-sm text-text outline-none placeholder:text-text-faint focus:border-accent"
         />
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-text-faint">
           Not your Apple password. Generate one at{" "}
           <a
             href="https://account.apple.com"
             target="_blank"
             rel="noreferrer noopener"
-            className="text-purple-400 underline underline-offset-2"
+            className="text-text underline underline-offset-2"
           >
             account.apple.com
           </a>{" "}
@@ -72,12 +72,12 @@ export function ConnectForm({ defaultAppleId }: { defaultAppleId?: string }) {
       </div>
 
       {state.status === "error" && (
-        <p role="alert" className="text-xs text-rose-300">
+        <p role="alert" className="text-xs text-bad">
           {state.message}
         </p>
       )}
       {state.status === "connected" && (
-        <p role="status" className="text-xs text-emerald-300">
+        <p role="status" className="text-xs text-good">
           {state.message}
         </p>
       )}

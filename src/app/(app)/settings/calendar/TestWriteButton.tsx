@@ -12,7 +12,7 @@ function Button() {
     <button
       type="submit"
       disabled={pending}
-      className="rounded-md border border-slate-700 px-3 py-2 text-xs text-slate-300 transition hover:border-slate-500 disabled:opacity-60"
+      className="rounded-md border border-line-strong px-3 py-2 text-xs text-text-dim transition hover:border-line-strong disabled:opacity-60"
     >
       {pending ? "Testing…" : "Run write test"}
     </button>
@@ -29,12 +29,12 @@ export function TestWriteButton() {
     <form action={formAction} className="flex flex-wrap items-center gap-3">
       <Button />
       {state.status === "connected" && (
-        <span role="status" className="text-xs text-emerald-300">
+        <span role="status" className="text-xs text-good">
           {state.message}
         </span>
       )}
       {state.status === "error" && (
-        <span role="alert" className="text-xs text-rose-300">
+        <span role="alert" className="text-xs text-bad">
           {state.message}
         </span>
       )}

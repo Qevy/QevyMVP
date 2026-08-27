@@ -67,7 +67,7 @@ export function CheckinChat({
   if (!started) {
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-text-dim">
           I&apos;ll go through what you scheduled last week and ask about
           anything that didn&apos;t happen. What you tell me gets stored in your
           words and used when planning future weeks.
@@ -80,7 +80,7 @@ export function CheckinChat({
               setStarted(true);
               send(openingPrompt);
             }}
-            className="rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-purple-500 disabled:opacity-50"
+            className="rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-soft disabled:opacity-50"
           >
             Start check-in
           </button>
@@ -99,8 +99,8 @@ export function CheckinChat({
             className={cn(
               "max-w-[85%] rounded-lg px-3.5 py-2.5 text-sm whitespace-pre-wrap",
               turn.role === "user"
-                ? "self-end bg-purple-600/20 text-purple-100"
-                : "self-start bg-slate-800/60 text-slate-200",
+                ? "self-end bg-accent/20 text-text"
+                : "self-start bg-surface text-text",
             )}
           >
             {turn.content}
@@ -108,13 +108,13 @@ export function CheckinChat({
         ))}
 
         {busy && (
-          <div className="self-start rounded-lg bg-slate-800/60 px-3.5 py-2.5 text-sm text-slate-500">
+          <div className="self-start rounded-lg bg-surface px-3.5 py-2.5 text-sm text-text-faint">
             Thinking…
           </div>
         )}
 
         {error && (
-          <p role="alert" className="rounded-md border border-rose-500/40 bg-rose-500/10 p-3 text-xs text-rose-200">
+          <p role="alert" className="rounded-md border border-bad/40 bg-bad/10 p-3 text-xs text-bad">
             {error}
           </p>
         )}
@@ -123,21 +123,21 @@ export function CheckinChat({
       </div>
 
       {captured.length > 0 && (
-        <section className="rounded-lg border border-slate-800 bg-slate-900/40 p-4">
-          <h2 className="mb-2 text-sm font-semibold text-slate-300">
+        <section className="rounded-card border border-line bg-surface p-4">
+          <h2 className="mb-2 text-sm font-semibold text-text-dim">
             Recorded so far
           </h2>
           <ul className="flex flex-col gap-2">
             {captured.map((item, index) => (
               <li key={index} className="text-xs">
-                <span className="text-slate-400">{item.blockTitle}</span>
-                <span className="mt-0.5 block text-slate-500">
+                <span className="text-text-dim">{item.blockTitle}</span>
+                <span className="mt-0.5 block text-text-faint">
                   &ldquo;{item.reasonText}&rdquo;
                 </span>
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-[11px] text-slate-600">
+          <p className="mt-3 text-[11px] text-text-faint">
             Stored in your words. Future schedules will take these into account.
           </p>
         </section>
@@ -146,10 +146,10 @@ export function CheckinChat({
       {finished ? (
         <div
           role="status"
-          className="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-emerald-200"
+          className="rounded-md border border-good/40 bg-good/10 p-4 text-sm text-good"
         >
           <p className="font-medium">Check-in complete.</p>
-          {summary && <p className="mt-1 text-emerald-200/80">{summary}</p>}
+          {summary && <p className="mt-1 text-text-dim">{summary}</p>}
         </div>
       ) : (
         <form
@@ -164,12 +164,12 @@ export function CheckinChat({
             onChange={(event) => setInput(event.target.value)}
             disabled={busy}
             placeholder="Type your answer…"
-            className="flex-1 rounded-md border border-slate-700 bg-slate-900 px-3 py-2.5 text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-purple-500 disabled:opacity-50"
+            className="flex-1 rounded-md border border-line-strong bg-surface-2 px-3 py-2.5 text-sm text-text outline-none placeholder:text-text-faint focus:border-accent disabled:opacity-50"
           />
           <button
             type="submit"
             disabled={busy || input.trim().length === 0}
-            className="rounded-md bg-purple-600 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-purple-500 disabled:opacity-40"
+            className="rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-soft disabled:opacity-40"
           >
             Send
           </button>

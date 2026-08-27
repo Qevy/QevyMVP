@@ -42,8 +42,8 @@ function EventChip({
       className={cn(
         "overflow-hidden rounded-md border px-1.5 py-1 text-[11px] leading-tight",
         isPlanned
-          ? "border-purple-400/60 bg-purple-500/15 text-purple-200"
-          : "border-slate-500/40 bg-slate-500/15 text-slate-200",
+          ? "border-line-strong bg-surface text-text"
+          : "border-line-strong bg-surface text-text",
         className,
       )}
     >
@@ -75,14 +75,14 @@ export function WeekGrid({ days, events, zone, plannerCalendarIds = [] }: Props)
               <h3
                 className={cn(
                   "mb-2 text-sm font-semibold",
-                  isToday ? "text-purple-300" : "text-slate-400",
+                  isToday ? "text-text-dim" : "text-text-dim",
                 )}
               >
                 {day.toFormat("cccc d LLL")}
                 {isToday && " · today"}
               </h3>
               {dayEvents.length === 0 ? (
-                <p className="rounded-md border border-dashed border-slate-700 px-3 py-2 text-xs text-slate-500">
+                <p className="rounded-md border border-dashed border-line-strong px-3 py-2 text-xs text-text-faint">
                   Nothing scheduled
                 </p>
               ) : (
@@ -105,7 +105,7 @@ export function WeekGrid({ days, events, zone, plannerCalendarIds = [] }: Props)
 
       {/* Desktop: time-positioned columns. */}
       <div className="hidden md:block">
-        <div className="grid grid-cols-[3.5rem_repeat(7,minmax(0,1fr))] border-b border-slate-800">
+        <div className="grid grid-cols-[3.5rem_repeat(7,minmax(0,1fr))] border-b border-line">
           <div />
           {days.map((day) => {
             const isToday = day.toISODate() === today;
@@ -113,8 +113,8 @@ export function WeekGrid({ days, events, zone, plannerCalendarIds = [] }: Props)
               <div
                 key={day.toISO()}
                 className={cn(
-                  "border-l border-slate-800 px-2 pb-2 text-center text-xs",
-                  isToday ? "text-purple-300" : "text-slate-400",
+                  "border-l border-line px-2 pb-2 text-center text-xs",
+                  isToday ? "text-text-dim" : "text-text-dim",
                 )}
               >
                 <div className="font-semibold">{day.toFormat("ccc")}</div>
@@ -129,7 +129,7 @@ export function WeekGrid({ days, events, zone, plannerCalendarIds = [] }: Props)
             {hours.map((hour, index) => (
               <div
                 key={hour}
-                className="absolute right-2 -translate-y-1/2 text-[10px] tabular-nums text-slate-600"
+                className="absolute right-2 -translate-y-1/2 text-[10px] tabular-nums text-text-faint"
                 style={{ top: index * PX_PER_HOUR }}
               >
                 {String(hour).padStart(2, "0")}:00
@@ -142,13 +142,13 @@ export function WeekGrid({ days, events, zone, plannerCalendarIds = [] }: Props)
             return (
               <div
                 key={day.toISO()}
-                className="relative border-l border-slate-800"
+                className="relative border-l border-line"
                 style={{ height: gridHeight }}
               >
                 {hours.map((hour, index) => (
                   <div
                     key={hour}
-                    className="absolute inset-x-0 border-t border-slate-800/60"
+                    className="absolute inset-x-0 border-t border-line"
                     style={{ top: index * PX_PER_HOUR }}
                   />
                 ))}

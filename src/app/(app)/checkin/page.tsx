@@ -52,37 +52,37 @@ export default async function CheckinPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 py-6 sm:px-6">
       <header>
-        <h1 className="text-xl font-semibold text-slate-100">Weekly check-in</h1>
-        <p className="text-xs text-slate-500">
+        <h1 className="text-xl font-semibold text-text">Weekly check-in</h1>
+        <p className="text-xs text-text-faint">
           {periodLabel} · {done} of {reviewable.length} completed
         </p>
       </header>
 
       {existing?.status === "completed" ? (
         <div className="flex flex-col gap-3">
-          <div className="rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4 text-sm text-emerald-200">
+          <div className="rounded-md border border-good/40 bg-good/10 p-4 text-sm text-good">
             <p className="font-medium">This week&apos;s check-in is done.</p>
             {existing.summary && (
-              <p className="mt-1 text-emerald-200/80">{existing.summary}</p>
+              <p className="mt-1 text-text-dim">{existing.summary}</p>
             )}
           </div>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-text-faint">
             The next one opens on{" "}
             {WEEKDAY_NAMES[String(profile.checkin_weekday)]} from{" "}
             {String(profile.checkin_hour).padStart(2, "0")}:00.{" "}
-            <Link href="/settings" className="text-purple-400 underline underline-offset-2">
+            <Link href="/settings" className="text-text underline underline-offset-2">
               Change that
             </Link>
             .
           </p>
         </div>
       ) : reviewable.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-slate-700 p-4 text-sm text-slate-400">
+        <div className="rounded-card border border-dashed border-line-strong p-4 text-sm text-text-dim">
           <p>Nothing was scheduled for {periodLabel}, so there is nothing to review.</p>
-          <p className="mt-2 text-xs text-slate-500">
+          <p className="mt-2 text-xs text-text-faint">
             Once you&apos;ve committed some blocks and lived a week with them, this
             is where the app asks what actually happened.{" "}
-            <Link href="/plan" className="text-purple-400 underline underline-offset-2">
+            <Link href="/plan" className="text-text underline underline-offset-2">
               Plan a week
             </Link>
             .
@@ -91,7 +91,7 @@ export default async function CheckinPage() {
       ) : (
         <>
           {!due && (
-            <p className="rounded-md border border-slate-700 bg-slate-900/40 p-3 text-xs text-slate-400">
+            <p className="rounded-md border border-line-strong bg-surface p-3 text-xs text-text-dim">
               This check-in isn&apos;t due until{" "}
               {WEEKDAY_NAMES[String(profile.checkin_weekday)]} at{" "}
               {String(profile.checkin_hour).padStart(2, "0")}:00 — you can start
@@ -100,7 +100,7 @@ export default async function CheckinPage() {
           )}
 
           {!isLlmConfigured() && (
-            <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm text-amber-200">
+            <p className="rounded-md border border-warn/40 bg-warn/10 p-3 text-sm text-warn">
               No LLM key configured, so the conversation can&apos;t run. Add
               GROQ_API_KEY to .env.local.
             </p>
