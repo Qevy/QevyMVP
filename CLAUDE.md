@@ -9,6 +9,39 @@ Everything below is decided. Do not relitigate without a reason to.
 
 ---
 
+## Status (2026-08-26)
+
+**All five planned features are built and verified against real infrastructure.
+The UI has been redesigned. Nothing is deployed.**
+
+| Area | State |
+|---|---|
+| Auth + RLS schema | Written. **Supabase is not connected** — the app runs in preview mode (see below) |
+| iCloud CalDAV | Verified end to end against the real account: login, MKCALENDAR, create, delete |
+| Planning chat | Working on Groq free tier, proposal validated server-side |
+| Weekly check-in | Working, records reasons verbatim |
+| Adaptation | Working, derived rules change proposals and are quoted back |
+| Voice input | Working via Groq Whisper |
+| UI | Dark dashboard, sidebar + card grid, mobile tab bar |
+| Tests | `npm run check` → 96 assertions, no network, no keys |
+
+**What's actually left**, in the order it matters:
+
+1. **Set real availability hours in Settings.** Still the default 07:00–22:00 on
+   weekdays, so the planner treats the workday as free. Since the 9-5 is not in
+   the calendar, this setting is the *only* thing keeping it out. Highest-value
+   thing anyone can do next, and it takes seconds.
+2. **Connect Supabase.** Unlocks real login and phone access, and is the
+   prerequisite for the friends leaderboard. Steps in `SETUP.md`.
+3. **Deploy to Vercel.**
+4. Local test data may still be present — `npm run seed:week -- --clear` wipes it.
+   `npm run cleanup:planner` removes anything the app wrote to iCloud.
+
+Nothing is half-finished. The items above are choices not yet made, not work
+left dangling.
+
+---
+
 ## The one idea that matters
 
 Existing tools solve half of this. Reclaim auto-reschedules a missed block but
@@ -84,6 +117,33 @@ past" block on the very first live run.
 
 ---
 
+## UI decisions
+
+- **Dark dashboard, violet accent**, built to a mockup the owner supplied
+  (references: Zest, Cashpilot, Uber). Sidebar on desktop, bottom tab bar on
+  phone. An earlier hours-of-day palette was replaced by this — do not
+  reintroduce it.
+- **Design tokens live in `globals.css` under `@theme`.** Use them
+  (`bg-surface`, `text-text-dim`, `border-line`) rather than raw Tailwind
+  palette classes, or the next restyle turns into another find-and-replace.
+- **Icons are drawn in `icons.tsx`**, 24-box / 1.6 stroke / currentColor. No
+  icon dependency.
+- **Dashboard numbers measure follow-through, not volume.** "Scheduled 40
+  hours" is a vanity metric. A day with nothing scheduled does **not** break a
+  consistency run — a rest day is not a failure, and this app should not
+  guilt-trip.
+- **Nothing on the dashboard is invented.** The mockup showed a "best streak"
+  figure; it was left out rather than faked, because the app does not record
+  one. Keep that rule.
+
+## Voice
+
+`/api/transcribe` → Groq `whisper-large-v3-turbo`. Deliberately **not** the
+browser SpeechRecognition API, which does not work in iOS Safari — the phone is
+where this gets spoken to. Audio is posted, transcribed, discarded; the
+transcript reaches the planner via `?say=` exactly as if typed. Needs
+`localhost` or `https` for microphone permission.
+
 ## Layout
 
 ```
@@ -104,6 +164,20 @@ src/lib/
     provider.ts           model resolution (one place)
     planner.ts            planning tools + loop
     checkin.ts            check-in tools + loop
+  stats.ts                dashboard figures (follow-through, streak, split)
+
+src/components/
+  Sidebar.tsx             desktop sidebar + mobile tab bar
+  icons.tsx               the whole icon set, drawn not imported
+  dashboard/Charts.tsx    donut, week bars, sparkline — plain SVG
+  dashboard/AssistantPanel.tsx  suggestion pills + tap-to-speak mic
+
+src/app/
+  (app)/page.tsx          dashboard (home)
+  (app)/week/             calendar grid        (app)/today/     mark done/missed
+  (app)/plan/             planning chat        (app)/checkin/   weekly check-in
+  (app)/patterns/         rules + evidence     (app)/settings/  profile, calendar
+  api/transcribe/         speech to text
 ```
 
 The two pure modules (`slots.ts`, `rules.ts`) hold the rules that matter and
@@ -180,6 +254,7 @@ iCalendar handling, and encryption — ~96 assertions, no network.
   rewards *looking* productive, which is a direct incentive to lie in the
   check-in — and the check-in is the app's only source of truth. Decide what
   gets scored before building it.
+- **Best-streak history.** No table records it, so the dashboard omits it.
 - **Streaming responses.** Non-streaming reads fine at current latency.
 - **`external_events` cache / CalDAV sync tokens.** The table exists. A
   planning turn currently takes ~30s, most of it reading iCloud. Add the cache

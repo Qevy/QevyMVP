@@ -8,8 +8,10 @@ the answer. This one has a weekly conversation about what actually happened,
 records your reasons in your own words, and stops proposing times that
 demonstrably do not work for you.
 
-> **Status:** functionally complete, deliberately plain-looking. A visual
-> redesign is the next piece of work.
+> **Status:** feature-complete and redesigned. Runs locally; not deployed.
+> Supabase is not connected yet, so it runs in preview mode (no login, state on
+> disk). See [CLAUDE.md](./CLAUDE.md) for a full status breakdown and what's
+> left.
 
 ---
 
@@ -81,7 +83,8 @@ blocks are rejected and handed back to the model to fix.
 | **Today** | One-tap Done / Partly / Missed. Tap again to undo |
 | **Check-in** | Weekly conversation about what happened. Records reasons verbatim |
 | **Patterns** | Every derived rule, the exact quotes behind it, and a switch to turn it off |
-| **Settings** | Timezone, available hours, buffer, check-in day, iCloud connection |
+| **Settings** | Name, timezone, available hours, buffer, check-in day, iCloud connection |
+| **Voice** | Tap the mic, talk, and it plans from your words — Groq Whisper, works in iOS Safari |
 
 ---
 
@@ -171,5 +174,5 @@ Architecture decisions and the traps found while building are recorded in
   worth solving first: a leaderboard rewards *looking* productive, which is a
   direct incentive to lie in the check-in — and the check-in is the app's only
   source of truth. What gets scored has to be decided before it is built.
-- **Visual design.** Functional but plain. Next up.
-- Streaming responses, calendar caching, payments, native apps.
+- **Deployment.** Runs locally only so far.
+- Streaming responses, calendar caching, best-streak history, payments, native apps.
